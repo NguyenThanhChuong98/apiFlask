@@ -2,31 +2,9 @@ from datetime import datetime, date, timedelta
 import pandas as pd
 from calendar import monthrange
 
-# date_format = '%Y-%m-%dT%H:%M:%S'
-# a = datetime.strptime('2019-01-01T00:00:00', date_format)
-# b = datetime.strptime('2019-01-31T23:59:00', date_format)
-# delta = b - a
-# print(delta.days + 1)
 
-
-start_date = "2019-12-31T00:00:00"
+start_date = "2019-1-1T00:00:00"
 end_date = "2020-12-31T23:59:00"
-
-
-def get_numb_days_of_month(start_date, end_date):
-    try:
-        date_format = '%Y-%m-%dT%H:%M:%S'
-        startdate = datetime.strptime(start_date, date_format)
-        enddate = datetime.strptime(end_date, date_format)
-        pr = pd.period_range(start=startdate, end=enddate, freq='M')
-        new_list = tuple([(period.month, period.year) for period in pr])
-        new_list1 = []
-        for x in new_list:
-            get_days_in_month = monthrange(x[1], x[0])[1]
-            new_list1.append(get_days_in_month)
-        return new_list1
-    except Exception as e:
-        pass
 
 
 def get_numb_days_in_week(start_date, end_date):
@@ -153,8 +131,9 @@ def reformat_date_output_year(start_date, end_date):
     except Exception as e:
         pass
 
+
 def get_number_day_in_year():
-    start_date = datetime(2019, 1, 1)
+    start_date = datetime(2019, 12, 1)
     end_date = datetime(2020, 12, 31)
     years = range(start_date.year, end_date.year + 1)
     start, end = start_date, end_date + timedelta(1)
@@ -189,18 +168,107 @@ def reformat_date_output_daily(start_date, end_date):
     return new_dict
 
 
-# print(reformat_date_output_month("2019-01-01T00:00:00", "2020-12-31T23:59:00"))
-# print(reformat_date_output_hour())
-# print(reformat_date_output_week())
-# print(reformat_date_output_daily(start_date, end_date))
-# print(reformat_date_output_year(start_date, end_date))
+def get_numb_day_in_year_1():
+    sdate = datetime(2019, 1, 1, 00, 00, 00)
+    edate = datetime(2019, 12, 31, 23, 59, 00)
+    if sdate.year == edate.year:
+        formula = edate - sdate
+        get_numb_days = formula + timedelta(1)
+        return get_numb_days
+    else:
+        sdate = datetime(2019, 1, 1, 00, 00, 00)
+        nb_day_in_year_st = datetime(2019, 12, 31, 23, 59, 00)
+        remaining_day_st = nb_day_in_year_st - sdate
+        final_st = remaining_day_st.days + 1
+
+        edate = datetime(2020, 12, 31, 23, 59, 00)
+        nb_day_in_year_end = datetime(2020, 1, 1, 00, 00, 00)
+        remaining_day_end = edate - nb_day_in_year_end
+        final_end = remaining_day_end.days + 1
+
+        get_numb_days = final_st + final_end
+        return get_numb_days
+
+    # print(reformat_date_output_month("2019-01-01T00:00:00", "2020-12-31T23:59:00"))
+    # print(reformat_date_output_hour())
+    # print(reformat_date_output_week())
+    # print(reformat_date_output_daily(start_date, end_date))
+    # print(reformat_date_output_year(start_date, end_date))
+
+
 # print(get_numb_days_of_month(start_date, end_date))
 # print(get_numb_days_in_month(start_date,end_date))
 # print(get_numb_days_of_month(start_date, end_date))
 # print(get_numb_days_in_week(start_date,end_date))
-# print(get_number_day_in_year(start_date,end_date))
+# print(get_numb_day_in_year_1())
+#
+# new_list = [31, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+#
+# start_date = datetime(2019, 1, 1, 00, 00, 00)
+# end_date = datetime(2020, 12, 31, 23, 59, 00)
+# sdate_days_of_month = 12
+# edate_days_of_month = 10
+# rest_sdate_days_of_month = (sdate_days_of_month - start_date.day) + 1
+# rest_edate_days_of_month = edate_days_of_month
+# new_list1 = []
+# for i in new_list:
+#     new_list1.append(i)
+# new_list1[0] = rest_sdate_days_of_month
+# new_list1[-1] = rest_edate_days_of_month
+# print(new_list1)
 
-list1 = [31, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-for i in list1:
-    result = 1/(24*i)
-    result
+def get_numb_days_of_month(start_date, end_date):
+    try:
+        date_format = '%Y-%m-%dT%H:%M:%S'
+        startdate = datetime.strptime(start_date, date_format)
+        enddate = datetime.strptime(end_date, date_format)
+        pr = pd.period_range(start=startdate, end=enddate, freq='M')
+        new_list = tuple([(period.month, period.year) for period in pr])
+        new_list1 = []
+        for x in new_list:
+            get_days_in_month = monthrange(x[1], x[0])[1]
+            new_list1.append(get_days_in_month)
+        return new_list1
+    except Exception as e:
+        pass
+
+
+def get_numb_day_in_month(sd,ed):
+    start_date = datetime(2019, 1, 1, 00, 00, 00)
+    end_date = datetime(2020, 12, 31, 23, 59, 00)
+    fnc_numb_days_of_month = get_numb_days_of_month(sd, ed)
+    sdate_days_of_month = fnc_numb_days_of_month[0]
+    print(sdate_days_of_month)
+    edate_days_of_month = fnc_numb_days_of_month[-1]
+    print(edate_days_of_month)
+    rest_sdate_days_of_month = (sdate_days_of_month - start_date.day) + 1
+    rest_edate_days_of_month = edate_days_of_month
+    new_list = []
+    for i in fnc_numb_days_of_month:
+        new_list.append(i)
+    new_list[0] = rest_sdate_days_of_month
+    new_list[-1] = rest_edate_days_of_month
+    return new_list
+
+
+sdate = datetime(2019, 1, 1, 00, 00, 00)  # start date
+edate = datetime(2020, 12, 31, 23, 59, 00)  # end date
+
+delta = edate - sdate  # as timedelta
+diff_in_day = delta.days + 1
+data = []
+indicator = "NB_MONTH"
+#for in list of deltaday with range no more than 7
+for i in range(0, int(diff_in_day) + 1, 7):
+    hour = sdate + timedelta(days=i)
+    week = hour.isocalendar()[1]
+    data.append({
+        "year": hour.year,
+        "month": hour.month,
+        "week": week
+    })
+new_dict = {
+    "error": {},
+    "data": data
+}
+print(new_dict)
